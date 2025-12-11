@@ -1,0 +1,12 @@
+streamlit>=1.22
+pdfplumber>=0.7.6
+beautifulsoup4>=4.12.2
+pillow>=9.5.0
+pytesseract>=0.3.10
+sentence-transformers>=2.2.2
+faiss-cpu>=1.7.4
+transformers>=4.34.0
+accelerate>=0.21.0
+torch>=2.0.0
+scikit-learn>=1.2.2
+tqdm>=4.65.0
