@@ -1,5 +1,4 @@
 from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
-from typing import List
 import torch
 
 class LocalLLM:
@@ -13,6 +12,7 @@ class LocalLLM:
         self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_name)
         if self.device != 'cpu' and torch.cuda.is_available():
             self.model = self.model.to(self.device)
+
         self.pipe = pipeline(
             'text2text-generation',
             model=self.model,
@@ -20,7 +20,10 @@ class LocalLLM:
             device=0 if (self.device!='cpu' and torch.cuda.is_available()) else -1
         )
 
-    def generate(self, question: str, context: List[str], max_length=256):
-        prompt = 'Context:\n' + '\n---\n'.join(context) + '\n\nQuestion:\n' + question + '\nAnswer:'
-        out = self.pipe(prompt, max_length=max_length, truncation=True)[0]['generated_text']
-        return out
+    def generate(self, question: str, context: list[str], max_length=256):
+        prompt = (
+            "Context:\n" + "\n---\n".join(context) +
+            f"\n\nQuestion: {question}\nAnswer:"
+        )
+        result = self.pipe(prompt, max_length=max_length, truncation=True)[0]
+        return result['generated_text']
